@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "726836552977",
+    "project_id": "userauth-d685a",
+    "storage_bucket": "userauth-d685a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726836552977:android:504313356818f5b175d8b0",
+        "android_client_info": {
+          "package_name": "com.example.user_registration_nxl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxVwl44SQo-EgWRAxm_J86jv5vHuDmVtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
