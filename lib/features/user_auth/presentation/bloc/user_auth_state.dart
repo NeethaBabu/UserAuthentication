@@ -10,5 +10,6 @@ class UserAuthSuccess extends UserAuthState {}
 
 class UserAuthError extends UserAuthState {
   final String message;
+
   UserAuthError(this.message);
 }

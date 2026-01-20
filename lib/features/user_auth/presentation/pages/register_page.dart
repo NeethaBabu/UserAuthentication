@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_registration_nxl/core/utils/validators.dart';
+import '../../widget/common_textfield.dart';
 import '../bloc/user_auth_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -74,10 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                           CommonTextField(
                             controller: nameCtrl,
-                            validator: (nameValidation) =>
-                                nameValidation == null || nameValidation.isEmpty
-                                ? 'Name required'
-                                : null,
+                            validator: Validators.validateName,
                             icon: Icons.person,
                             label: "Name",
                           ),
@@ -86,16 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                           CommonTextField(
                             controller: emailCtrl,
-                            validator: (emailValidation) {
-                              if (emailValidation == null ||
-                                  emailValidation.isEmpty) {
-                                return 'Email required';
-                              }
-                              if (!emailValidation.contains('@')) {
-                                return 'Invalid email';
-                              }
-                              return null;
-                            },
+                            validator: Validators.validateEmail,
                             icon: Icons.email,
                             label: "Email",
                           ),
@@ -139,12 +128,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 });
                               },
                             ),
-                            validator: (confirmValue) {
-                              if (confirmValue != passCtrl.text) {
-                                return 'Passwords do not match';
-                              }
-                              return null;
-                            },
+                            validator: (confirmValue) =>
+                                Validators.validateConfirmPassword(
+                                  confirmValue,
+                                  passCtrl.text,
+                                ),
                           ),
                           const SizedBox(height: 24),
 
@@ -197,40 +185,6 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class CommonTextField extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final TextEditingController? controller;
-  final Widget? suffixIcon;
-  final String? Function(String?)? validator;
-  final bool obscureText;
-
-  const CommonTextField({
-    super.key,
-    required this.label,
-    required this.icon,
-    this.controller,
-    this.suffixIcon,
-    this.validator,
-    this.obscureText = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        suffixIcon: suffixIcon,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

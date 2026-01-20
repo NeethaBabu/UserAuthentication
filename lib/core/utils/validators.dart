@@ -39,5 +39,53 @@ class Validators {
     return errors.join('\n'); // ✅ show all errors
   }
 
+  static String? validateEmail(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Email is required';
+    }
+
+    final List<String> errors = [];
+
+    if (!value.contains('@')) {
+      errors.add('• Missing @ symbol');
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+      errors.add('• Invalid email format');
+    }
+
+    return errors.isEmpty ? null : errors.join('\n');
+  }
+
+  static String? validateName(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Name is required';
+    }
+
+    if (value.trim().length < 2) {
+      return 'Name must be at least 2 characters';
+    }
+
+    if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+      return 'Only letters allowed';
+    }
+
+    return null;
+  }
+
+  static String? validateConfirmPassword(
+      String? confirmValue,
+      String originalPassword,
+      ) {
+    if (confirmValue == null || confirmValue.isEmpty) {
+      return 'Confirm password is required';
+    }
+
+    if (confirmValue != originalPassword) {
+      return 'Passwords do not match';
+    }
+
+    return null;
+  }
 
 }

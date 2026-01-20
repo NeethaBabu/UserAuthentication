@@ -36,10 +36,11 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
       emit(UserAuthError('Email already exists or password is weak'));
     }
   }
+
   Future<void> _logout(
-      UserLogoutRequested event,
-      Emitter<UserAuthState> emit,
-      ) async {
+    UserLogoutRequested event,
+    Emitter<UserAuthState> emit,
+  ) async {
     emit(UserAuthLoading());
     try {
       await repository.logout();
@@ -48,5 +49,4 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
       emit(UserAuthError('Logout failed. Please try again.'));
     }
   }
-
 }

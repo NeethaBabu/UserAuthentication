@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_registration_nxl/features/user_auth/widget/common_textfield.dart';
+import '../../widget/dont_have_acc_widget.dart';
 import '../bloc/user_auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<UserAuthBloc, UserAuthState>(
       listener: (context, state) {
-
         if (state is UserAuthSuccess) {
           ScaffoldMessenger.of(
             context,
@@ -69,42 +70,31 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(height: 30),
 
-                        TextField(
+                        CommonTextField(
                           controller: emailCtrl,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
+                          label: 'Email',
+                          icon: Icons.email,
                         ),
-                        const SizedBox(height: 16),
 
-                        TextField(
+                        const SizedBox(height: 16),
+                        CommonTextField(
                           controller: passCtrl,
                           obscureText: !_isPasswordVisible,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            prefixIcon: const Icon(Icons.lock),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isPasswordVisible = !_isPasswordVisible;
-                                });
-                              },
-                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
                           ),
+                          label: 'Password',
+                          icon: Icons.lock,
                         ),
-
                         const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerRight,
@@ -154,23 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Don't have an account? "),
-                            GestureDetector(
-                              onTap: () =>
-                                  Navigator.pushNamed(context, '/register'),
-                              child: const Text(
-                                'Register',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  // color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        DontHaveAccountWidget(),
                       ],
                     ),
                   ),

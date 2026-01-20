@@ -10,5 +10,6 @@ class AuthRepository {
 
   Future<void> register(String email, String password) =>
       service.register(email, password);
+
   Future<void> logout() => service.logout();
 }
