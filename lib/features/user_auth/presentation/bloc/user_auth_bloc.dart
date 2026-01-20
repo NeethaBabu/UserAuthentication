@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-
-import '../data/auth_repository.dart';
+import '../../data/auth_repository.dart';
 
 part 'user_auth_event.dart';
 

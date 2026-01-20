@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/user_auth_bloc.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
-
-  LoginPage({super.key});
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserAuthBloc, UserAuthState>(
       listener: (context, state) {
-        if (state is UserAuthLoading) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Logging in...'),
-              duration: Duration(milliseconds: 200),
-            ),
-          );
-        }
 
         if (state is UserAuthSuccess) {
           ScaffoldMessenger.of(
@@ -38,7 +36,8 @@ class LoginPage extends StatelessWidget {
         return Scaffold(
           body: Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(begin: AlignmentGeometry.topCenter,
+              gradient: LinearGradient(
+                begin: AlignmentGeometry.topCenter,
                 colors: [Colors.black54, Colors.black87],
               ),
             ),
@@ -84,12 +83,24 @@ class LoginPage extends StatelessWidget {
 
                         TextField(
                           controller: passCtrl,
-                          obscureText: true,
+                          obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
                             labelText: 'Password',
                             prefixIcon: const Icon(Icons.lock),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
                             ),
                           ),
                         ),
@@ -99,7 +110,10 @@ class LoginPage extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {},
-                            child: const Text('Forgot Password?',style: TextStyle(color: Colors.black),),
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ),
 
@@ -108,7 +122,8 @@ class LoginPage extends StatelessWidget {
                           width: double.infinity,
                           height: 48,
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.grey,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25),
                               ),
@@ -128,7 +143,13 @@ class LoginPage extends StatelessWidget {
                                 ? const CircularProgressIndicator(
                                     color: Colors.white,
                                   )
-                                : Text('Login', style: TextStyle(color: Colors.black87,fontSize: 15)),
+                                : Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 15,
+                                    ),
+                                  ),
                           ),
                         ),
 

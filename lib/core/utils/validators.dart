@@ -14,23 +14,30 @@ class Validators {
       return 'Password is required';
     }
 
+    final List<String> errors = [];
+
     if (value.length < 6) {
-      return 'Minimum 6 characters required';
+      errors.add('• Minimum 6 characters required');
     }
 
     if (!RegExp(r'[A-Z]').hasMatch(value)) {
-      return 'Add at least 1 capital letter';
+      errors.add('• Add at least 1 capital letter');
     }
 
     if (!RegExp(r'[a-z]').hasMatch(value)) {
-      return 'Add at least 1 small letter';
+      errors.add('• Add at least 1 small letter');
     }
 
     if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-      return 'Add at least 1 special character';
+      errors.add('• Add at least 1 special character');
     }
 
-    return null;
+    if (errors.isEmpty) {
+      return null; // ✅ valid password
+    }
+
+    return errors.join('\n'); // ✅ show all errors
   }
+
 
 }

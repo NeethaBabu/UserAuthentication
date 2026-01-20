@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_registration_nxl/core/utils/validators.dart';
-
 import '../bloc/user_auth_bloc.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});
 
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+
   final nameCtrl = TextEditingController();
+
   final emailCtrl = TextEditingController();
+
   final passCtrl = TextEditingController();
+
   final confirmCtrl = TextEditingController();
+
+  bool _isPasswordVisible = false;
+
+  bool _isConfirmPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +43,8 @@ class RegisterPage extends StatelessWidget {
         builder: (context, state) {
           return Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(begin: AlignmentGeometry.topCenter,
+              gradient: LinearGradient(
+                begin: AlignmentGeometry.topCenter,
                 colors: [Colors.black54, Colors.black87],
               ),
             ),
@@ -41,7 +54,8 @@ class RegisterPage extends StatelessWidget {
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
-                  ),color: Color(0xFFECECEC),
+                  ),
+                  color: Color(0xFFECECEC),
                   child: Padding(
                     padding: const EdgeInsets.all(24),
                     child: Form(
@@ -58,19 +72,23 @@ class RegisterPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 24),
 
-                          TextFormField(
+                          CommonTextField(
                             controller: nameCtrl,
                             validator: (nameValidation) =>
-                            nameValidation == null || nameValidation.isEmpty ? 'Name required' : null,
-                            decoration: _input('Name', Icons.person),
-                            // style: TextStyle(color: Colors.grey),
+                                nameValidation == null || nameValidation.isEmpty
+                                ? 'Name required'
+                                : null,
+                            icon: Icons.person,
+                            label: "Name",
                           ),
+
                           const SizedBox(height: 16),
 
-                          TextFormField(
+                          CommonTextField(
                             controller: emailCtrl,
                             validator: (emailValidation) {
-                              if (emailValidation == null || emailValidation.isEmpty) {
+                              if (emailValidation == null ||
+                                  emailValidation.isEmpty) {
                                 return 'Email required';
                               }
                               if (!emailValidation.contains('@')) {
@@ -78,45 +96,67 @@ class RegisterPage extends StatelessWidget {
                               }
                               return null;
                             },
-                            decoration: _input('Email', Icons.email),
-                            // style: TextStyle(color: Colors.white),
+                            icon: Icons.email,
+                            label: "Email",
                           ),
-                          const SizedBox(height: 16),
 
-                          TextFormField(
+                          const SizedBox(height: 16),
+                          CommonTextField(
                             controller: passCtrl,
-                            obscureText: true,
                             validator: Validators.validatePassword,
-                            decoration: _input('Password', Icons.lock),
-                            // style: TextStyle(color: Colors.white),
+                            icon: Icons.lock,
+                            label: "Password",
+                            obscureText: !_isPasswordVisible,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
                           const SizedBox(height: 16),
-
-                          TextFormField(
+                          CommonTextField(
                             controller: confirmCtrl,
-                            obscureText: true,
+                            icon: Icons.lock_outline,
+                            obscureText: !_isConfirmPasswordVisible,
+                            label: "Confirm Password",
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isConfirmPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isConfirmPasswordVisible =
+                                      !_isConfirmPasswordVisible;
+                                });
+                              },
+                            ),
                             validator: (confirmValue) {
                               if (confirmValue != passCtrl.text) {
                                 return 'Passwords do not match';
                               }
                               return null;
                             },
-                            decoration: _input(
-                              'Confirm Password',
-                              Icons.lock_outline,
-                            ),
-                            // style: TextStyle(color: Colors.white),
                           ),
-
                           const SizedBox(height: 24),
 
                           SizedBox(
                             width: double.infinity,
                             height: 45,
                             child: ElevatedButton(
-                              style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(
-                                Colors.grey
-                              )),
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(
+                                  Colors.grey,
+                                ),
+                              ),
                               onPressed: state is UserAuthLoading
                                   ? null
                                   : () {
@@ -133,14 +173,20 @@ class RegisterPage extends StatelessWidget {
                                   ? const CircularProgressIndicator(
                                       color: Colors.white,
                                     )
-                                  : const Text('Register',style: TextStyle(color: Colors.black87),),
+                                  : const Text(
+                                      'Register',
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
                             ),
                           ),
 
                           const SizedBox(height: 16),
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: const Text('Back to Login',style: TextStyle(color: Colors.black87),),
+                            child: const Text(
+                              'Back to Login',
+                              style: TextStyle(color: Colors.black87),
+                            ),
                           ),
                         ],
                       ),
@@ -154,12 +200,38 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  InputDecoration _input(String label, IconData icon) {
-    return InputDecoration(
-      labelText: label,
-      prefixIcon: Icon(icon),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+class CommonTextField extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final TextEditingController? controller;
+  final Widget? suffixIcon;
+  final String? Function(String?)? validator;
+  final bool obscureText;
+
+  const CommonTextField({
+    super.key,
+    required this.label,
+    required this.icon,
+    this.controller,
+    this.suffixIcon,
+    this.validator,
+    this.obscureText = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        suffixIcon: suffixIcon,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      ),
     );
   }
 }
