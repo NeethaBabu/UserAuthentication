@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:user_registration_nxl/features/user_auth/widget/common_textfield.dart';
-import '../../widget/dont_have_acc_widget.dart';
 import '../bloc/user_auth_bloc.dart';
+import '../widget/common_textfield.dart';
+import '../widget/dont_have_acc_widget.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});

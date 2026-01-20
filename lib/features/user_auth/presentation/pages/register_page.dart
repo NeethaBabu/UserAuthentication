@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_registration_nxl/core/utils/validators.dart';
-import '../../widget/common_textfield.dart';
 import '../bloc/user_auth_bloc.dart';
+import '../widget/common_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});

@@ -29,7 +29,7 @@ class WelcomePage extends StatelessWidget {
         ),
         body: const Center(
           child: Text(
-            'Welcome 🎉',
+            'Welcome, everyone..',
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
         ),
